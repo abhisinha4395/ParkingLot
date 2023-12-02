@@ -9,6 +9,15 @@ public class ParkingLot extends BaseModel {
     private List<Gate> gates;
     private ParkingLotStatus parkingLotStatus;
     private List<VehicleTypes> allowedVehicleTypes;
+    private SlotAssignmentStrategy slotAssignmentStrategy;
+
+    public SlotAssignmentStrategy getSlotAssignmentStrategy() {
+        return slotAssignmentStrategy;
+    }
+
+    public void setSlotAssignmentStrategy(SlotAssignmentStrategy slotAssignmentStrategy) {
+        this.slotAssignmentStrategy = slotAssignmentStrategy;
+    }
 
     public String getAddress() {
         return address;
