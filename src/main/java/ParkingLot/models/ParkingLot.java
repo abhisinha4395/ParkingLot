@@ -10,6 +10,15 @@ public class ParkingLot extends BaseModel {
     private ParkingLotStatus parkingLotStatus;
     private List<VehicleTypes> allowedVehicleTypes;
     private SlotAssignmentStrategy slotAssignmentStrategy;
+    private FeeCalculationStrategy feeCalculationStrategy;
+
+    public FeeCalculationStrategy getFeeCalculationStrategy() {
+        return feeCalculationStrategy;
+    }
+
+    public void setFeeCalculationStrategy(FeeCalculationStrategy feeCalculationStrategy) {
+        this.feeCalculationStrategy = feeCalculationStrategy;
+    }
 
     public SlotAssignmentStrategy getSlotAssignmentStrategy() {
         return slotAssignmentStrategy;

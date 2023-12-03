@@ -1,13 +1,14 @@
 package ParkingLot;
 
+import ParkingLot.controller.BillController;
 import ParkingLot.controller.TicketController;
+import ParkingLot.dto.BillRequestDto;
+import ParkingLot.dto.BillResponseDto;
 import ParkingLot.dto.TicketRequestDto;
 import ParkingLot.dto.TicketResponseDto;
 import ParkingLot.models.VehicleTypes;
-import ParkingLot.repo.GateRepository;
-import ParkingLot.repo.ParkingLotRepository;
-import ParkingLot.repo.TicketRepository;
-import ParkingLot.repo.VehicleRepository;
+import ParkingLot.repo.*;
+import ParkingLot.service.BillService;
 import ParkingLot.service.TicketService;
 
 import java.util.Date;
@@ -19,6 +20,7 @@ public class ParkingLotApplication {
         ParkingLotRepository parkingLotRepository = new ParkingLotRepository();
         TicketRepository ticketRepository = new TicketRepository();
         VehicleRepository vehicleRepository = new VehicleRepository();
+        BillRepository billRepository = new BillRepository();
 
         TicketService ticketService = new TicketService(gateRepository, ticketRepository,
                 parkingLotRepository, vehicleRepository);
@@ -32,5 +34,16 @@ public class ParkingLotApplication {
         TicketController ticketController = new TicketController(ticketService);
         TicketResponseDto ticketResponseDto = ticketController.issueTicket(ticketRequestDto);
         System.out.println(ticketResponseDto.getResponseType());
+
+        BillService billService = new BillService(gateRepository, parkingLotRepository,
+                billRepository);
+
+        BillRequestDto billRequestDto = new BillRequestDto();
+        billRequestDto.setGateId((long) 2);
+        billRequestDto.setTicket(ticketResponseDto.getTicket());
+
+        BillController billController = new BillController(billService);
+        BillResponseDto billResponseDto = billController.generateBill(billRequestDto);
+        System.out.println(billResponseDto.getResponseType());
     }
 }

@@ -1,6 +1,5 @@
 package ParkingLot.strategies;
 
-import ParkingLot.models.ParkingLot;
 import ParkingLot.models.SlotAssignmentStrategy;
 
 public class SlotAssignmentFactory {
