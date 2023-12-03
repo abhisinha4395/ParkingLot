@@ -1,14 +1,14 @@
 package ParkingLot;
 
 import ParkingLot.controller.BillController;
+import ParkingLot.controller.PaymentController;
 import ParkingLot.controller.TicketController;
-import ParkingLot.dto.BillRequestDto;
-import ParkingLot.dto.BillResponseDto;
-import ParkingLot.dto.TicketRequestDto;
-import ParkingLot.dto.TicketResponseDto;
+import ParkingLot.dto.*;
+import ParkingLot.models.PaymentMode;
 import ParkingLot.models.VehicleTypes;
 import ParkingLot.repo.*;
 import ParkingLot.service.BillService;
+import ParkingLot.service.PaymentService;
 import ParkingLot.service.TicketService;
 
 import java.util.Date;
@@ -21,6 +21,7 @@ public class ParkingLotApplication {
         TicketRepository ticketRepository = new TicketRepository();
         VehicleRepository vehicleRepository = new VehicleRepository();
         BillRepository billRepository = new BillRepository();
+        PaymentRepository paymentRepository = new PaymentRepository();
 
         TicketService ticketService = new TicketService(gateRepository, ticketRepository,
                 parkingLotRepository, vehicleRepository);
@@ -45,5 +46,20 @@ public class ParkingLotApplication {
         BillController billController = new BillController(billService);
         BillResponseDto billResponseDto = billController.generateBill(billRequestDto);
         System.out.println(billResponseDto.getResponseType());
+
+        PaymentRequestDto paymentRequestDto = new PaymentRequestDto();
+        PaymentResponseDto paymentResponseDto;
+        do {
+            PaymentController paymentController = new PaymentController(
+                    new PaymentService(paymentRepository));
+            // Hard coded now, but should be taken as user input
+            paymentRequestDto.setPaymentMode(PaymentMode.CASH);
+            paymentRequestDto.setBill(billResponseDto.getBill());
+            paymentRequestDto.setAmount(10);
+
+             paymentResponseDto = paymentController.initiatePayment(paymentRequestDto);
+        } while (billResponseDto.getBill().getAmount() - paymentRequestDto.getAmount() > 0);
+        System.out.println(paymentResponseDto.getResponseType());
+
     }
 }
